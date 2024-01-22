@@ -41,7 +41,7 @@ Puedes descargar aquí la última versión (3.60) de la bios BIOS:
 
 https://support.dynabook.com/support/viewContentDetail?contentId=3483311
 
-Por si acaso el link desaparece, dejo aquí una [copia local](../assets/blog/attachments/sk1wv360.exe).
+Por si acaso el link desaparece, dejo aquí una [copia local](/assets/blog/attachments/sk1wv360.exe).
 
 Notas / lista de cambios
 
