@@ -1,7 +1,7 @@
 ---
 author: aportela
 pubDatetime: 2024-01-22T07:46:22.166Z
-title: Como actualizar la bios de un toshiba satellite L750-L755 sin una batería conectada
+title: Cómo actualizar la bios de un toshiba satellite L750-L755 sin una batería conectada
 slug: actualizar-bios-toshiba-satellite-l750-l755-sin-bateria-conectada
 featured: false
 draft: false
