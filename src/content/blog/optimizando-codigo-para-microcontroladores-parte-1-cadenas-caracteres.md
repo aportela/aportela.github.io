@@ -8,7 +8,7 @@ draft: false
 tags:
   - es
   - c
-  - c++
+  - cplusplus
   - microcontroladores
   - esp32
 description: Algunas anotaciones a tener en cuenta sobre optimizaciones de código cuando trabajamos con cadenas de caracteres en microcontroladores
