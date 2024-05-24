@@ -20,9 +20,9 @@ Recientemente me he auto-introducido en el mundo de los microcontroladores (ardu
 
 Evidentemente si una de las partes tarda en procesarse más de lo normal, la otra se verá afectada. Hablando claro: si los cálculos / procesamiento de la lógica inicial tardan 2 segundos en ejecutarse, el refresco de pantalla que viene despues no se hará hasta pasados esos 2 segundos. Lo deseable a priori sería poder tener un refresco de pantalla de 30 fps osea que el loop de "procesamiento/logica" + "repintado de pantalla" debería ejecutarse un mínimo de 30 veces por segundo.
 
-En esta primera parte me voy a centrar en la optimización del procesamiento / lógica (en posteriores partes quizás haga otros apuntes sobre como optimizar el redibujado).
+En esta primera parte me voy a centrar en la optimización del procesamiento / lógica (en posteriores partes quizás haga otros apuntes sobre como optimizar el redibujado), mas concretamente en el uso de cadenas de caracteres.
 
-En mi proyecto, la mayor parte de la lógica principal se establece en base a unas lecturas y escrituras de datos (mayormente cadenas) a través del puerto serie, para entendernos y poniendo un ejemplo que todos puedan entender: envío una cadena "TEMPERATURA;" (solicito leer la temperatura) y recibo una cadena "TEMPERATURA120;" (me responden que el valor de la temperatura es 120 grados), hay varios tipos de comandos (TEMPERATURA/VELOCIDAD...) y cada uno con una estructura propia de valores de respuesta. Como me interesa trabajar en un entorno "en tiempo real" (lo más aproximado posible, claro) se envian/reciben decenas o cientos de estos comandos (en cadenas de caracteres) que deben ser tratados.
+En mi proyecto, la mayor parte de la lógica principal se establece en base a unas lecturas y escrituras de datos (mayormente cadenas) a través del puerto serie, para entendernos y poniendo un ejemplo que todos puedan entender: envío una cadena "TEMPERATURA;" (solicito leer la temperatura) y recibo una cadena "TEMPERATURA120;" (me responden que el valor de la temperatura es 120 grados), hay varios tipos de comandos (TEMPERATURA/VELOCIDAD...) y cada uno con una estructura propia de valores de respuesta. Como me interesa trabajar en un entorno "en tiempo real" (lo más aproximado posible, claro) se envian/reciben decenas o cientos de estos comandos (en cadenas de caracteres) cada pocos milisegundos para ser tratados.
 
 Debido a que en Arduino IDE por defecto se usa C++ para programar y todo el tema de cadenas en C++ se encapsula en la clase String (para facilitar todo el uso en comparación con C) se me ocurrió que quizás por aquí podría "arañar algun ciclo de CPU", al fin y al cabo, cada capa de abstracción siempre añade un coste extra.
 
@@ -41,7 +41,7 @@ void setup() {
   String RespuestaRecibida;
 
   // ...
-  // aqui en realidad nunca asignaríamos así sinó que el valor lo obtendríamos de otro lado
+  // aquí en realidad nunca asignaríamos de este modo directo (el valor lo obtendríamos de otro lado)
   // ...
   RespuestaRecibida = "OK;";
 
@@ -72,7 +72,7 @@ void setup() {
   char RespuestaRecibida[20];
 
   // ...
-  // aqui en realidad nunca asignaríamos así sinó que el valor lo obtendríamos de otro lado
+  // aquí en realidad nunca asignaríamos de este modo directo (el valor lo obtendríamos de otro lado)
   // ...
   strcpy(RespuestaRecibida, RespuestaOK);
 
