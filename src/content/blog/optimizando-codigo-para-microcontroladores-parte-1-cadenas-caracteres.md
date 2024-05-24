@@ -30,7 +30,7 @@ Voy a explicar con dos ejemplos (en C++ y C) a lo que me refiero:
 
 **C++**
 
-```
+```c++
 void setup() {
   Serial.begin(9600);
   // variables que almacenan diferentes valores que podemos recibido en la respuesta (para diferenciarlos)
@@ -61,7 +61,7 @@ void loop() {
 
 **C**
 
-```
+```c
 void setup() {
   Serial.begin(9600);
   // variables que almacenan diferentes valores de respuesta
@@ -90,17 +90,17 @@ void loop() {
 }
 ```
 
-Como veis en C++ el código es mas simple y facil de entender ya que los operadores de asignación (=) y comparación (==) son "directos", a diferencia de C, que tenemos que usar "funciones intermedias" para todo este tratamiento, por no hablar claro de que en C++ las funciones pueden devolverte una cadena (tipo String) pero para hacer esto en C tienes que pasar como parámetro un puntero a la cadena lo cual puede hacerlo mas "feo/complejo" para gente que no esté acostumbrada al lenguage C.
+Como veis en C++ el código es mas simple y facil de entender ya que los operadores de asignación (=) y comparación (==) son "directos", a diferencia de C, que tenemos que usar "funciones intermedias" para todo este tratamiento, por no hablar, claro, de que en C++ las funciones pueden devolverte una cadena (tipo String) pero para hacer esto en C tienes que pasar como parámetro un puntero a la cadena lo cual puede hacerlo mas "feo/complejo" (para gente que no esté acostumbrada al lenguage C).
 
-Aquí la cuestión principal que me traía de cabeza es si trabajar con la clase String de C++ sería menos eficiente que usar arrays de caracteres en C con funciones intermedias además de posibles punteros para procesar todo esto ya que en pocas operaciones por segundo la diferencía podría ser nimia pero en decenas o miles la cosa podría tener más relevancia. En mi proyecto se envian comandos (en cadenas) cada pocos ms vía puerto serie y se reciben respuestas que se también se asignan a cadenas (que luego deben ser evaluadas y/o comparadas).
+Aquí la cuestión principal que me traía de cabeza es si trabajar con la clase String de C++ sería menos eficiente que usar arrays de caracteres en C con funciones intermedias además de posibles punteros para procesar todo esto ya que en pocas operaciones por segundo la diferencía podría ser nimia pero en decenas o miles la cosa podría tener más relevancia. En mi proyecto se envian comandos (en cadenas) cada pocos milisegundos vía puerto serie y se reciben respuestas que se también se asignan a cadenas (que luego deben ser evaluadas y/o comparadas).
 
-Para evaluar todo esto he creado unos proyectos en C++ y C que ejecutan una serie de benchmarks con el propósito de ver cual era más eficiente.
+Para evaluar todo esto he creado unos pequeños proyectos en C++ y C que ejecutan una serie de benchmarks con el propósito de ver cual era más eficiente.
 
 ## Benchmark 1: Asignación y comparación exacta de cadenas
 
 ### Lenguaje C++
 
-```
+```c++
 void setup() {
   Serial.begin(9600);
   while (!Serial) {
@@ -129,20 +129,16 @@ void loop() {
 
 #### Resultado compilación:
 
-```
-Sketch uses 262545 bytes (20%) of program storage space. Maximum is 1310720 bytes.
-Global variables use 21400 bytes (6%) of dynamic memory, leaving 306280 bytes for local variables. Maximum is 327680 bytes.
-```
+> Sketch uses 262545 bytes (20%) of program storage space. Maximum is 1310720 bytes.
+> Global variables use 21400 bytes (6%) of dynamic memory, leaving 306280 bytes for local variables. Maximum is 327680 bytes.
 
 #### Resultado ejecución:
 
-```
-Nº de asignaciones/comparaciones evaluadas: 302840 (tipo String y operador ==)
-```
+> Nº de asignaciones/comparaciones evaluadas: 302840 (tipo String y operador ==)
 
 ### Lenguaje C
 
-```
+```c
 #include <string.h>
 
 void setup() {
@@ -174,22 +170,18 @@ void loop() {
 
 #### Resultado compilación:
 
-```
-Sketch uses 262285 bytes (20%) of program storage space. Maximum is 1310720 bytes.
-Global variables use 21400 bytes (6%) of dynamic memory, leaving 306280 bytes for local variables. Maximum is 327680 bytes.
-```
+> Sketch uses 262285 bytes (20%) of program storage space. Maximum is 1310720 bytes.
+> Global variables use 21400 bytes (6%) of dynamic memory, leaving 306280 bytes for local variables. Maximum is 327680 bytes.
 
 #### Resultado ejecución:
 
-```
-Nº de asignaciones/comparaciones evaluadas evaluadas: 751663 (tipo char[] y función strcmp)
-```
+> Nº de asignaciones/comparaciones evaluadas evaluadas: 751663 (tipo char[] y función strcmp)
 
 ## Benchmark 2: Asignación y comparación parcial de cadenas
 
 ### Lenguaje C++
 
-```
+```c++
 void setup() {
   Serial.begin(9600);
   while (!Serial) {
@@ -219,20 +211,16 @@ void loop() {
 
 #### Resultado compilación:
 
-```
-Sketch uses 262649 bytes (20%) of program storage space. Maximum is 1310720 bytes.
-Global variables use 21400 bytes (6%) of dynamic memory, leaving 306280 bytes for local variables. Maximum is 327680 bytes.
-```
+> Sketch uses 262649 bytes (20%) of program storage space. Maximum is 1310720 bytes.
+> Global variables use 21400 bytes (6%) of dynamic memory, leaving 306280 bytes for local variables. Maximum is 327680 bytes.
 
 #### Resultado ejecución:
 
-```
-Nº de asignaciones/comparaciones evaluadas: 220637 (tipo String y método startsWith)
-```
+> Nº de asignaciones/comparaciones evaluadas: 220637 (tipo String y método startsWith)
 
 ### Lenguaje C
 
-```
+```c
 #include <string.h>
 
 void setup() {
@@ -265,16 +253,12 @@ void loop() {
 
 #### Resultado compilación:
 
-```
-Sketch uses 262305 bytes (20%) of program storage space. Maximum is 1310720 bytes.
-Global variables use 21400 bytes (6%) of dynamic memory, leaving 306280 bytes for local variables. Maximum is 327680 bytes.
-```
+> Sketch uses 262305 bytes (20%) of program storage space. Maximum is 1310720 bytes.
+> Global variables use 21400 bytes (6%) of dynamic memory, leaving 306280 bytes for local variables. Maximum is 327680 bytes.
 
 #### Resultado ejecución:
 
-```
-Nº de asignaciones/comparaciones evaluadas: 497464 (tipo char[] y función strncmp)
-```
+> Nº de asignaciones/comparaciones evaluadas: 497464 (tipo char[] y función strncmp)
 
 ### Conclusiones
 
@@ -285,3 +269,7 @@ C se ejecuta aproximadamente el doble de rapido (751663) que C++ (302840) en est
 #### Benchmark 2: Asignación y comparación parcial de cadenas
 
 C vuelve a ejecutarse aproximadamente el doble de rapido (497464) que C++ (220637) en estos ejemplos de asignación / comparación parcial. El uso en bytes de lo generado por C (program storage space) de nuevo es algo menor (262305) también con respecto a lo generado por C++ (262649).
+
+### Disclaimer
+
+Cada caso es un mundo por tanto quizás vuestro código no se vea afectado de tal modo que podais sacar rendimiento de este tipo de optimizaciones pero como mínimo, si teneis problemas de que alguna parte se os está ejecutando mas lenta de lo que debería y contiene algun bloque similar a lo anteriormente expuesto, el hacer una pequeña prueba reemplazando los bloques "conflictivos" en C++ por C quizás os haga mejorar algo los tiempos.
